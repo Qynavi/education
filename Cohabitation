@@ -1,0 +1,292 @@
+import random
+
+
+class House:
+    """
+    Класс дома
+
+    attributes:
+        money: количество денег в семье
+        food_for_people: количество еды для людей
+        food_for_cat: количество еды для кота
+        garbage: количество грязи в доме
+        total_coats: количество шуб в доме
+        total_money: общее количество заработанных денег
+    """
+    money = 100
+    food_for_people = 50
+    food_for_cat = 30
+    total_coats = 0
+    garbage = 0
+    total_money = 0
+
+    def print_house_info(self):
+        print('Состояние дел:\nДенег: {}\nЕды для людей: {}\nЕды для котов: {}\nЗагрязненность: {}'.format(
+            self.money, self.food_for_people, self.food_for_cat, self.garbage
+        ))
+
+    def garbage_change(self):
+        """ Метод увеличения грязи """
+        self.garbage += 5
+
+
+class Person:
+    """
+    Базовый класс человека.
+
+    args:
+        __name (str): приватное имя человека
+
+    attributes:
+        satiety_level: уровень сытости
+        happiness: уровень счастья
+        total_eaten: общее количество употребленных единиц еды
+    """
+    satiety_level = 30
+    happiness = 100
+    total_eaten = 0
+
+    def __init__(self, name):
+        self.__name = name
+
+    def print_info(self):
+        """ Метод вывода информации """
+        print('Уровень сытости: {}\nУровень счастья: {}\n'.format(
+            self.satiety_level, self.happiness
+        ))
+
+    def get_name(self):
+        """ Гетер имени """
+        return self.__name
+
+    def pet_the_cat(self):
+        """ Метод поглаживания кота """
+        self.happiness += 5
+        self.satiety_level -= 10
+        print('{} погладил(-а) кота, уровень счастья поднялся!'.format(self.get_name()))
+
+    def to_eat(self):
+        """ Метод приема пищи человеком и уменьшения еды в холодильнике """
+        tmp_eat_count = random.randint(10, 30)
+        if my_house.food_for_people > tmp_eat_count:
+            self.satiety_level += tmp_eat_count
+            my_house.food_for_people -= tmp_eat_count
+            self.total_eaten += tmp_eat_count
+            print('{} хорошо поел(-а)!'.format(self.get_name()))
+        else:
+            print('В холодильнике недостаточно еды! {} не поел(-а).'.format(self.get_name()))
+            self.satiety_level -= 10
+
+    def eat_alive(self):
+        """ Метод проверки нахождения в живых по уровню сытости """
+        if self.satiety_level < 0:
+            return False
+        return True
+
+    def happiness_alive(self):
+        """ Метод проверки нахождения в живых по уровню счастья """
+        if self.happiness < 10:
+            return False
+        return True
+
+    def garbage_check(self):
+        """ Метод снижения уровня счастья от загрязнения дома """
+        if my_house.garbage > 90:
+            self.happiness -= 10
+            print('В доме очень грязно! {} теряет очки счастья!'.format(self.get_name()))
+
+
+class Husband(Person):
+    """ Класс мужа. Родитель Person """
+
+    def to_play(self):
+        """ Метод игры в компьютер """
+        self.satiety_level -= 10
+        self.happiness += 20
+        print('{} хорошо поиграл. Уровень счастья поднялся.'.format(self.get_name()))
+
+    def to_work(self):
+        """ Метод похода на работу """
+        self.satiety_level -= 10
+        my_house.money += 150
+        my_house.total_money += 150
+        print('{} сходил на работу и получил зарплату!'.format(self.get_name()))
+
+
+class Wife(Person):
+    """ Класс жены. Родитель Person """
+
+    def go_to_market(self):
+        """ Метод покупки продуктов """
+        self.satiety_level -= 10
+        products_for_people = random.randint(30, 100)
+        my_house.food_for_people += products_for_people
+        my_house.money -= products_for_people
+        products_for_cat = random.randint(20, 50)
+        my_house.food_for_cat += products_for_cat
+        my_house.money -= products_for_cat
+        print('{} сходила за продуктами.'.format(self.get_name()))
+        print('Для людей куплено {} единиц еды.'.format(products_for_people))
+        print('Для кота куплено {} единиц еды.'.format(products_for_cat))
+
+    def to_buy_the_coat(self):
+        """ Метод покупки шубы """
+        self.satiety_level -= 10
+        if my_house.money > 350:
+            my_house.money -= 350
+            my_house.total_coats += 1
+            self.happiness += 60
+            print('Жена купила {} шубу и очень довольна!'.format(my_house.total_coats))
+        else:
+            print('{} походила по магазинам, но к сожалению денег на шубу не хватило!'.format(
+                self.get_name()
+            ))
+
+    def to_clean(self):
+        """ Метод уборки дома """
+        self.satiety_level -= 10
+        if my_house.garbage < 100:
+            my_house.garbage = 0
+        else:
+            my_house.garbage -= 100
+        print('{} сделала уборку. В доме чисто!'.format(self.get_name()))
+
+
+class Cat:
+    """
+    Класс кота
+
+    args:
+        name (str): имя кота
+
+    attributes:
+        satiety_level (int): уровень сытости
+        total_eaten: общее количество употребленных единиц еды
+    """
+    satiety_level = 30
+    total_eaten = 0
+
+    def __init__(self, name):
+        self.__name = name
+
+    def get_name(self):
+        """ Гетер имени """
+        return self.__name
+
+    def print_cat_info(self):
+        """ Метод вывода информации """
+        print('Уровень сытости: {}\n'.format(self.satiety_level))
+
+    def to_eat(self):
+        """ Метод приема пищи котом и уменьшения еды в холодильнике """
+        tmp_eat_count = random.randint(3, 10)
+        if my_house.food_for_cat > tmp_eat_count:
+            self.satiety_level += tmp_eat_count * 2
+            my_house.food_for_cat -= tmp_eat_count
+            self.total_eaten += tmp_eat_count
+            print('Кот {} хорошо поел'.format(self.get_name()))
+        else:
+            print('В холодильнике недостаточно кошачьей еды! Кот {} не поел.'.format(self.get_name()))
+
+    def damage(self):
+        """ Метод обдирания обоев """
+        self.satiety_level -= 10
+        my_house.garbage += 5
+        print('Кот {} ободрал обои!'.format(self.get_name()))
+
+    def to_sleep(self):
+        """ Метод сна """
+        self.satiety_level -= 10
+        print('Кот {} проспал весь день!'.format(self.get_name()))
+
+    def alive(self):
+        """ Метод проверки нахождения в живых """
+        if self.satiety_level < 0:
+            return False
+        return True
+
+
+def living_man(man):
+    """Функция жизни мужчины"""
+    count = random.randint(1, 6)
+    if man.satiety_level < 20 and my_house.food_for_people > 10:
+        man.to_eat()
+    elif my_house.money < 100:
+        man.to_work()
+    elif count == 1:
+        man.to_work()
+    elif count == 2 and my_house.food_for_people > 4:
+        man.to_eat()
+    elif count == 3:
+        man.pet_the_cat()
+    else:
+        man.to_play()
+
+
+def living_woman(woman):
+    """Функция жизни женщины"""
+    count = random.randint(1, 6)
+    if woman.satiety_level < 20 and my_house.food_for_people > 10:
+        woman.to_eat()
+    elif my_house.food_for_people < 50 and my_house.money > 60:
+        woman.go_to_market()
+    elif my_house.garbage > 110 or count == 1:
+        woman.to_clean()
+    elif count == 2 and my_house.food_for_people > 10:
+        woman.to_eat()
+    elif count == 3:
+        woman.pet_the_cat()
+    else:
+        woman.to_buy_the_coat()
+
+
+def living_cat(cat):
+    """Функция жизни кота"""
+    count = random.randint(1, 6)
+    if cat.satiety_level < 15 and my_house.food_for_cat > 5:
+        cat.to_eat()
+    elif count == 2 and my_house.food_for_cat > 5:
+        cat.to_eat()
+    elif count == 3:
+        cat.damage()
+    else:
+        cat.to_sleep()
+
+
+my_house = House()
+husband = Husband(name='Алекс')
+wife = Wife(name='Джессика')
+cat_1 = Cat(name='Том')
+cat_2 = Cat(name='Джерри')
+people_list = [husband, wife]
+cats_list = [cat_1, cat_2]
+
+for i_day in range(365):
+    print('\n{} день жизни\n'.format(i_day + 1))
+    for i_person in people_list:
+        if i_person.eat_alive() and i_person.happiness_alive():
+            my_house.garbage_change()
+            if isinstance(i_person, Husband):
+                living_man(i_person)
+            else:
+                living_woman(i_person)
+            i_person.garbage_check()
+            i_person.print_info()
+        else:
+            print('{} больше не с нами...'.format(i_person.get_name()))
+
+    for i_cat in cats_list:
+        if i_cat.alive():
+            living_cat(i_cat)
+            i_cat.print_cat_info()
+        else:
+            print('Кот {} больше не с нами...'.format(i_cat.get_name()))
+    my_house.print_house_info()
+
+if wife.eat_alive() and wife.happiness_alive() and husband.eat_alive() and husband.happiness_alive():
+    print('\nХорошо прожили год!\nЗаработано денег: {}\nКуплено шуб: {}'
+          '\nСъедено еды для людей: {}\nСъедено еды для котов: {}'.format(
+            my_house.total_money, my_house.total_coats, wife.total_eaten + husband.total_eaten,
+            cat_1.total_eaten + cat_2.total_eaten))
+else:
+    print('\nПлохой год...')
